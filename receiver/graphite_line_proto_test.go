@@ -110,8 +110,7 @@ func TestGraphiteReceiverStartStop(t *testing.T) {
 	}
 	router := routers.NewDummyRouter()
 	maxBatchSize := 100
-	queueSize := 1000
-	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, queueSize, 100*time.Millisecond, 1000*time.Millisecond)
+	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, 100*time.Millisecond)
 	if err != nil {
 		t.Fatalf("Failed to initialize r: %v", err)
 	}
@@ -146,8 +145,7 @@ func initGraphiteParser(dir string, strict bool, exitChan chan struct{}) (*graph
 	}
 	router := routers.NewDummyRouter()
 	maxBatchSize := 100
-	queueSize := 1000
-	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, queueSize, 100*time.Millisecond, 1000*time.Millisecond)
+	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, 100*time.Millisecond)
 
 	return &graphiteParser{
 		config:   &config,
@@ -605,8 +603,7 @@ func TestGraphiteFullPipeline(t *testing.T) {
 	}
 	router := routers.NewDummyRouter()
 	maxBatchSize := 10
-	queueSize := 1000
-	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, queueSize, 10*time.Millisecond, 1000*time.Millisecond)
+	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, 10*time.Millisecond)
 	if err != nil {
 		t.Fatalf("Failed to initialize r: %v", err)
 	}
@@ -653,7 +650,6 @@ func TestGraphiteFullPipeline(t *testing.T) {
 			t.Errorf("Test %v failed: Unexpected error value '%v' (expected '%v')", testCases[i].testName, err, testCases[i].expectedError)
 		}
 	}
-	sender.Close()
 	time.Sleep(50 * time.Millisecond)
 
 	if !haveErrors {
@@ -675,9 +671,7 @@ func TestGraphiteFullPipeline(t *testing.T) {
 			}
 		}
 	}
-
-
-
+	sender.Close()
 	// Send a lot of data without checking
 
 	var data []byte
@@ -851,8 +845,7 @@ func BenchmarkLineProtocolParserSmall(b *testing.B) {
 	}
 	router := routers.NewDummyRouter()
 	maxBatchSize := 100
-	queueSize := 1000
-	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, queueSize, 100*time.Millisecond, 1000*time.Millisecond)
+	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, 100*time.Millisecond)
 	if err != nil {
 		b.Fatalf("Failed to initialize receiver: %v", err)
 	}
@@ -896,8 +889,7 @@ func BenchmarkLineProtocolParserSmallRelaxed(b *testing.B) {
 	}
 	router := routers.NewDummyRouter()
 	maxBatchSize := 100
-	queueSize := 1000
-	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, queueSize, 100*time.Millisecond, 1000*time.Millisecond)
+	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, 100*time.Millisecond)
 	if err != nil {
 		b.Fatalf("Failed to initialize receiver: %v", err)
 	}
@@ -941,8 +933,7 @@ func BenchmarkLineProtocolParserSmallRelaxedExtra5Spaces(b *testing.B) {
 	}
 	router := routers.NewDummyRouter()
 	maxBatchSize := 100
-	queueSize := 1000
-	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, queueSize, 100*time.Millisecond, 1000*time.Millisecond)
+	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, 100*time.Millisecond)
 	if err != nil {
 		b.Fatalf("Failed to initialize receiver: %v", err)
 	}
@@ -986,8 +977,7 @@ func BenchmarkLineProtocolParserLong(b *testing.B) {
 	}
 	router := routers.NewDummyRouter()
 	maxBatchSize := 100
-	queueSize := 1000
-	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, queueSize, 100*time.Millisecond, 1000*time.Millisecond)
+	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, 100*time.Millisecond)
 	if err != nil {
 		b.Fatalf("Failed to initialize receiver: %v", err)
 	}
@@ -1033,8 +1023,7 @@ func BenchmarkGraphiteFullPipelineSingleMetric(b *testing.B) {
 	}
 	router := routers.NewDummyRouter()
 	maxBatchSize := 10
-	queueSize := 1000
-	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, queueSize, 10*time.Millisecond, 1000*time.Millisecond)
+	r, err := NewGraphiteLineReceiver(config, router, exitChan, maxBatchSize, 10*time.Millisecond)
 	if err != nil {
 		b.Fatalf("Failed to initialize r: %v", err)
 	}
